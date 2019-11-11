@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: com.alibaba:druid-spring-boot-starter:unknown">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/alibaba/druid-spring-boot-starter/unknown/druid-spring-boot-starter-unknown.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/com/alibaba/druid-spring-boot-starter/unknown/druid-spring-boot-starter-unknown-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/alibaba/druid-spring-boot-starter/unknown/druid-spring-boot-starter-unknown-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
