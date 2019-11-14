@@ -7,10 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
- * @auther G.Fukang
- * @date 6/7 12:45
+ * Created by Gu Zhiqiang on 2019-11-16
  */
-@Service(value = "StockService")
+
+@Service
 public class StockServiceImpl implements StockService {
 
     @Autowired

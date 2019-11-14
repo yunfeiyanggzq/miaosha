@@ -1,6 +1,8 @@
 package com.yunfeiyang.miaosha.controller;
 
 
+import com.yunfeiyang.miaosha.common.StockInRedis.StockMemory;
+import com.yunfeiyang.miaosha.common.limit.Limit;
 import com.yunfeiyang.miaosha.pojo.Stock;
 import com.yunfeiyang.miaosha.service.api.OrderService;
 import com.yunfeiyang.miaosha.service.api.StockService;
@@ -44,6 +46,7 @@ public class IndexController {
             // 清空订单表
             res &= (orderService.delOrderDBBefore() == 0 ? 1 : 0);
             // 重置缓存
+            StockMemory.clearRedis(1);
 
         } catch (Exception e) {
             log.error("Exception: ", e);
@@ -62,5 +65,28 @@ public class IndexController {
         return res==1?success:error;
     }
 
+    @RequestMapping(value = "addOrderWithLock", method = RequestMethod.POST)
+    @ResponseBody
+    public String addOrderWithLock(HttpServletRequest request,int saleId) throws Exception {
+        int res=orderService.createNewOrderWithOptimisticLock(saleId);
+        log.info("result {}",res);
+        return res==1?success:error;
+    }
 
+    @RequestMapping(value = "addOrderWithLockRedis", method = RequestMethod.POST)
+    @ResponseBody
+    public String addOrderWithLockRedis(HttpServletRequest request,int saleId) throws Exception {
+        int res=orderService.CreateNewOrderWithOptimisticLockAndRedis(saleId);
+        log.info("result {}",res);
+        return res==1?success:error;
+    }
+
+    @RequestMapping(value = "addOrderWithLockRedisLimit", method = RequestMethod.POST)
+    @ResponseBody
+    public String addOrderWithLockRedisLimit(HttpServletRequest request,int saleId) throws Exception {
+        if(!Limit.limit()) return error;
+        int res=orderService.CreateNewOrderWithOptimisticLockAndRedisLimit(saleId);
+        log.info("result {}",res);
+        return res==1?success:error;
+    }
 }

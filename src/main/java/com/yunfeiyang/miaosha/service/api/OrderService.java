@@ -16,5 +16,11 @@ public interface OrderService {
 
     int createOrder(StockOrder order);
 
-    public int createNewOrder(int sid) throws Exception;
+    int createNewOrder(int sid) throws Exception;
+
+    int createNewOrderWithOptimisticLock(int sid) throws Exception;
+
+    int CreateNewOrderWithOptimisticLockAndRedis(int sid)throws  Exception;
+
+    int CreateNewOrderWithOptimisticLockAndRedisLimit(int sid) throws Exception;
 }

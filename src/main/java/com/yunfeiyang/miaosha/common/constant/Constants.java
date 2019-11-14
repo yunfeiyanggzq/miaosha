@@ -8,6 +8,6 @@ public class Constants {
     public final static String STOCK_SALE="ss";
     public final static String STOCK_VERSION="sv";
 
-    private static final String success = "SUCCESS";
-    private static final String error = "ERROR";
+    public static final String success = "SUCCESS";
+    public static final String error = "ERROR";
 }

@@ -1,6 +1,5 @@
 package com.yunfeiyang.miaosha.dao;
 
-import com.yunfeiyang.miaosha.pojo.Stock;
 import com.yunfeiyang.miaosha.pojo.StockOrder;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;

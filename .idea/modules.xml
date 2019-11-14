@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/maiosha.iml" filepath="$PROJECT_DIR$/maiosha.iml" />
+      <module fileurl="file://$PROJECT_DIR$/miaosha.iml" filepath="$PROJECT_DIR$/miaosha.iml" />
     </modules>
   </component>
 </project>
