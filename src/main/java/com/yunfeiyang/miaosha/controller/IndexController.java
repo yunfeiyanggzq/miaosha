@@ -6,6 +6,7 @@ import com.yunfeiyang.miaosha.common.limit.Limit;
 import com.yunfeiyang.miaosha.pojo.Stock;
 import com.yunfeiyang.miaosha.service.api.OrderService;
 import com.yunfeiyang.miaosha.service.api.StockService;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +21,11 @@ import javax.servlet.http.HttpServletRequest;
  * Created by Gu Zhiqiang on 2019-11-11
  */
 
+
 @Controller
 @RequestMapping(value = "/")
+@Slf4j
 public class IndexController {
-    private Logger log = LoggerFactory.getLogger(IndexController.class);
     private static final String success = "SUCCESS";
     private static final String error = "ERROR";
 
@@ -41,18 +43,15 @@ public class IndexController {
     public String initDBAndRedisBefore(HttpServletRequest request) {
         int res = 0;
         try {
-            // 初始化库存信息
             res = stockService.initDBBefore();
-            // 清空订单表
             res &= (orderService.delOrderDBBefore() == 0 ? 1 : 0);
-            // 重置缓存
             StockMemory.clearRedis(1);
 
         } catch (Exception e) {
-            log.error("Exception: ", e);
+            log.error("failed to init mysql and redis before run", e);
         }
         if (res == 1) {
-            log.info("重置数据库和缓存成功！");
+            log.info("success to init mysql and redis before run！");
         }
         return res == 1 ? success : error;
     }
@@ -61,7 +60,7 @@ public class IndexController {
     @ResponseBody
     public String addOrder(HttpServletRequest request,int saleId) throws Exception {
         int res=orderService.createNewOrder(saleId);
-        log.info("result {}",res);
+        log.info("add a order result:{}",res);
         return res==1?success:error;
     }
 
@@ -69,7 +68,7 @@ public class IndexController {
     @ResponseBody
     public String addOrderWithLock(HttpServletRequest request,int saleId) throws Exception {
         int res=orderService.createNewOrderWithOptimisticLock(saleId);
-        log.info("result {}",res);
+        log.info("add a order with optimistic lock resylt:{}",res);
         return res==1?success:error;
     }
 
@@ -77,7 +76,7 @@ public class IndexController {
     @ResponseBody
     public String addOrderWithLockRedis(HttpServletRequest request,int saleId) throws Exception {
         int res=orderService.CreateNewOrderWithOptimisticLockAndRedis(saleId);
-        log.info("result {}",res);
+        log.info("add a order with optimistic lock and redis result:{}",res);
         return res==1?success:error;
     }
 
@@ -86,7 +85,7 @@ public class IndexController {
     public String addOrderWithLockRedisLimit(HttpServletRequest request,int saleId) throws Exception {
         if(!Limit.limit()) return error;
         int res=orderService.CreateNewOrderWithOptimisticLockAndRedisLimit(saleId);
-        log.info("result {}",res);
+        log.info("add a order with optimistic lock , redis and limit result:{}",res);
         return res==1?success:error;
     }
 }

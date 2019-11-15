@@ -1,5 +1,6 @@
 package com.yunfeiyang.miaosha.common.utils;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
@@ -8,6 +9,7 @@ import redis.clients.jedis.JedisPoolConfig;
 /**
  * Created by Gu Zhiqiang on 2019-11-11
  */
+@Slf4j
 @Component
 public class RedisPool {
 
@@ -27,30 +29,35 @@ public class RedisPool {
 
     private static String password = "Gzq123456";
 
+    static {
+        initPool();
+    }
+
+    // initPool init the redis connection pool
     private static void initPool() {
         JedisPoolConfig config = new JedisPoolConfig();
-
         config.setMaxTotal(maxTotal);
         config.setMaxIdle(maxIdle);
         config.setTestOnBorrow(testOnBorrow);
         config.setBlockWhenExhausted(true);
         config.setMaxWaitMillis(maxWait);
-
         pool = new JedisPool(config, redisIP, redisPort, 1000 * 2,password);
+        log.info("success to get redis connect pool");
     }
 
-    // 类加载到 jvm 时直接初始化连接池
-    static {
-        initPool();
-    }
-
+    // getJedis return a redis connection
     public static Jedis getJedis() {
         return pool.getResource();
     }
 
+    // jedisPoolClose close a redis connection
     public static void jedisPoolClose(Jedis jedis) {
         if (jedis != null) {
             jedis.close();
         }
+    }
+
+    public static void main(String[] args) {
+        getJedis();
     }
 }

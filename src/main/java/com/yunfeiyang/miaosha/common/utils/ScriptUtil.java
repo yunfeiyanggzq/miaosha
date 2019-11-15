@@ -11,21 +11,18 @@ import java.util.Arrays;
  */
 public class ScriptUtil {
 
-    // 解析 lua
-    public static String getScript(String path) {
+    // read lua
+    public static String getScript(String path) throws IOException {
         StringBuilder stringBuilder = new StringBuilder();
 
         InputStream inputStream = ScriptUtil.class.getClassLoader().getResourceAsStream(path);
 
-        try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream))) {
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
             String str;
             while ((str = bufferedReader.readLine()) != null) {
                 stringBuilder.append(str).append(System.lineSeparator());
             }
-        } catch (IOException e) {
-            System.out.println(Arrays.toString(e.getStackTrace()));
-        }
-
+            inputStream.close();
         return stringBuilder.toString();
     }
 }

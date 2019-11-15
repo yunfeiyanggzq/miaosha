@@ -34,7 +34,6 @@ public class OrderServiceImpl implements OrderService {
         return orderMapper.delOrderDBBefore();
     }
 
-    @Override
     public int createOrder(StockOrder order) {
         return orderMapper.createOrder(order);
     }
@@ -66,6 +65,11 @@ public class OrderServiceImpl implements OrderService {
         return createOrder(stock);
     }
 
+    @Override
+    public void consumerFromKafaka() {
+
+    }
+
     public Stock checkSale(int sid) throws Exception {
         Stock stock=stockService.selectByID(sid);
         if(stock.getCount()<1){
@@ -84,6 +88,7 @@ public class OrderServiceImpl implements OrderService {
         stock.setVersion(Integer.parseInt(RedisPoolUtil.get(Constants.STOCK_VERSION+sid)));
         stock.setSale(Integer.parseInt(RedisPoolUtil.get(Constants.STOCK_SALE+sid)));
         stock.setName("huawei");
+        stock.setId(sid);
         return stock;
 
     }

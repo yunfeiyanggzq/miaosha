@@ -8,8 +8,7 @@ import java.util.Date;
 /**
  * Created by Gu Zhiqiang on 2019-11-16
  */
-@Getter
-@Setter
+
 public class StockOrder {
     private Integer id;
 
