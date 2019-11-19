@@ -87,7 +87,7 @@ add into a kafka queue
 
 
 **测试流程如下：**
-本系统压力测试结果为:
+本系统不同优化方法下的吞吐量比较:
 
 ![result](./src/main/resources/static/Jmeter%20压力测试%20TPS.png)
 
