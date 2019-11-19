@@ -87,6 +87,9 @@ add into a kafka queue
 
 
 **测试流程如下：**
+本系统压力测试结果为:
+
+![result](./src/main/resources/static/Jmeter%20压力测试%20TPS.png)
 
 首先下载 JMeter 安装包  可以去官网下载：http://jmeter.apache.org
 
