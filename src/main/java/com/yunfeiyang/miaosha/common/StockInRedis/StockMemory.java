@@ -28,7 +28,7 @@ public class StockMemory {
             RedisPoolUtil.set(Constants.STOCK_COUNT + sid, String.valueOf(1000));
             tx.exec();
         }catch (Exception e){
-            log.error("failed to reset redis,err:",e);
+            //log.error("failed to reset redis,err:",e);
         }finally {
             RedisPool.jedisPoolClose(redis);
         }
@@ -45,7 +45,7 @@ public class StockMemory {
             RedisPoolUtil.decr(Constants.STOCK_COUNT + stock.getId());
             tx.exec();
         }catch (Exception e){
-            log.error("failed to make redis and mysql syc,err:",e);
+            //log.error("failed to make redis and mysql syc,err:",e);
         }finally {
             RedisPool.jedisPoolClose(redis);
         }

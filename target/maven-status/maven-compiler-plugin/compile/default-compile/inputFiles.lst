@@ -3,6 +3,7 @@
 /home/yunfeiyang/miaosha/src/main/java/com/yunfeiyang/miaosha/common/redisPreHeat.java
 /home/yunfeiyang/miaosha/src/main/java/com/yunfeiyang/miaosha/common/limit/Limit.java
 /home/yunfeiyang/miaosha/src/main/java/com/yunfeiyang/miaosha/common/utils/RedisPoolUtil.java
+/home/yunfeiyang/miaosha/src/main/java/com/yunfeiyang/miaosha/kafka/ConsumerListen.java
 /home/yunfeiyang/miaosha/src/main/java/com/yunfeiyang/miaosha/common/StockInRedis/StockMemory.java
 /home/yunfeiyang/miaosha/src/main/java/com/yunfeiyang/miaosha/service/impl/StockServiceImpl.java
 /home/yunfeiyang/miaosha/src/main/java/com/yunfeiyang/miaosha/controller/IndexController.java

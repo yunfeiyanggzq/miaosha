@@ -1,6 +1,8 @@
 package com.yunfeiyang.miaosha.service.impl;
 
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.yunfeiyang.miaosha.common.StockInRedis.StockMemory;
 import com.yunfeiyang.miaosha.common.constant.Constants;
 import com.yunfeiyang.miaosha.common.utils.RedisPoolUtil;
@@ -10,6 +12,8 @@ import com.yunfeiyang.miaosha.pojo.StockOrder;
 import com.yunfeiyang.miaosha.service.api.OrderService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +32,14 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private StockServiceImpl stockService;
+
+    @Autowired
+    private KafkaTemplate<String,String> kafkaTemplate;
+
+    @Value("miaosha")
+    private String kafkaTopic;
+
+    private Gson gson=new GsonBuilder().create();
 
     @Override
     public int delOrderDBBefore() {
@@ -66,14 +78,21 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void consumerFromKafaka() {
+    public void CreateNewOrderWithOptimisticLockAndRedisLimitKafka(int sid) throws Exception {
+        Stock stock=checkSaleFromRedis(sid);
+        kafkaTemplate.send(kafkaTopic,gson.toJson(stock));
+    }
 
+    @Override
+    public int consumerFromKafaka(Stock stock) throws Exception {
+        saleStockWithOptimisticLockRedis(stock);
+        return createOrder(stock);
     }
 
     public Stock checkSale(int sid) throws Exception {
         Stock stock=stockService.selectByID(sid);
         if(stock.getCount()<1){
-            throw  new Exception("stock is 0");
+            throw  new RuntimeException("stock is 0");
         }
         return stock;
     }
@@ -81,7 +100,7 @@ public class OrderServiceImpl implements OrderService {
     public Stock checkSaleFromRedis(int sid) throws Exception {
         int count=Integer.parseInt(RedisPoolUtil.get(Constants.STOCK_COUNT+sid));
         if(count<1){
-            throw  new Exception("stock is 0");
+            throw  new RuntimeException("stock is 0");
         }
         Stock stock=new Stock();
         stock.setCount(count);
@@ -102,14 +121,14 @@ public class OrderServiceImpl implements OrderService {
     public int saleStockWithOptimisticLock(Stock stock) throws Exception {
         int res=stockService.addStackWithOptimisticLock(stock);
         if(res==0){
-            throw  new Exception("drop the request because the optimistic lock");
+            throw  new RuntimeException("drop the request because the optimistic lock");
         }
         return res;
     }
     public int saleStockWithOptimisticLockRedis(Stock stock) throws Exception {
         int res=stockService.addStackWithOptimisticLock(stock);
         if(res==0){
-            throw  new Exception("drop the request because the optimistic lock");
+            throw  new RuntimeException("drop the request because the optimistic lock");
         }
         StockMemory.redisLoadFromDB(stock);
         return res;
@@ -122,7 +141,7 @@ public class OrderServiceImpl implements OrderService {
         order.setName(stock.getName());
         int res= orderMapper.createOrder(order);
         if(res==0){
-            throw new Exception("failed to create order");
+            throw new RuntimeException("failed to create order");
         }
         return res;
     }

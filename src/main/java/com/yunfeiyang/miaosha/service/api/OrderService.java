@@ -10,6 +10,8 @@ public interface OrderService {
 
     int delOrderDBBefore();
 
+    int consumerFromKafaka(Stock stock)throws  Exception;
+
     int createNewOrder(int sid) throws Exception;
 
     int createNewOrderWithOptimisticLock(int sid) throws Exception;
@@ -18,5 +20,5 @@ public interface OrderService {
 
     int CreateNewOrderWithOptimisticLockAndRedisLimit(int sid) throws Exception;
 
-    void consumerFromKafaka(Stock stock);
+    void CreateNewOrderWithOptimisticLockAndRedisLimitKafka(int sid)throws Exception;
 }

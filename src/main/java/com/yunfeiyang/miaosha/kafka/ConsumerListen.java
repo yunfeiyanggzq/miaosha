@@ -24,12 +24,10 @@ public class ConsumerListen {
     private OrderService service;
 
     @KafkaListener(topics = "miaosha")
-    public void listen(ConsumerRecord<String,String> record){
+    public void listen(ConsumerRecord<String,String> record) throws Exception {
         Optional<?> KafkaMessage=Optional.ofNullable(record.value());
         String message=(String)KafkaMessage.get();
         Stock stock=gson.fromJson(message,Stock.class);
         service.consumerFromKafaka(stock);
     }
-
-
 }
