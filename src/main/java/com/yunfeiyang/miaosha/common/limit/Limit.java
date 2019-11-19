@@ -20,7 +20,7 @@ public class Limit {
         try {
             script = ScriptUtil.getScript("limit.lua");
         } catch (IOException e) {
-            //log.error("failed to read lua script",e);
+            log.error("failed to read lua script",e);
             e.printStackTrace();
         }
     }
@@ -32,7 +32,7 @@ public class Limit {
             String key = String.valueOf(System.currentTimeMillis() / 1000);
             Object result = jedis.eval(script, Collections.singletonList(key), Collections.singletonList(String.valueOf(limitValue)));
             if ((long) result != 0) {
-                //log.info("success to get the limit check pass");
+                log.info("success to get the limit check pass");
                 return true;
             }
         } catch (Exception e) {
@@ -40,7 +40,7 @@ public class Limit {
         } finally {
             jedis.close();
         }
-        //log.info("failed to get the limit check pass");
+        log.info("failed to get the limit check pass");
         return false;
     }
 

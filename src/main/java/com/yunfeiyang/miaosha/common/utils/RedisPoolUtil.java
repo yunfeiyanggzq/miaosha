@@ -3,8 +3,6 @@ package com.yunfeiyang.miaosha.common.utils;
 import lombok.extern.slf4j.Slf4j;
 import redis.clients.jedis.Jedis;
 
-import java.util.List;
-
 /**
  * Created by Gu Zhiqiang on 2019-11-11
  */
@@ -19,7 +17,7 @@ public class RedisPoolUtil {
             jedis = RedisPool.getJedis();
             result = jedis.set(key, value);
         } catch (Exception e) {
-            //log.error("failed to set key:{} value:{} in redis,err:",key,value,e);
+            log.error("failed to set key:{} value:{} in redis,err:",key,value,e);
         } finally {
             RedisPool.jedisPoolClose(jedis);
         }
@@ -33,7 +31,7 @@ public class RedisPoolUtil {
             jedis = RedisPool.getJedis();
             result = jedis.get(key);
         } catch (Exception e) {
-            //log.error("failed to get key:{} from redis",key,e);
+            log.error("failed to get key:{} from redis",key,e);
         } finally {
             RedisPool.jedisPoolClose(jedis);
         }
@@ -47,7 +45,7 @@ public class RedisPoolUtil {
             jedis = RedisPool.getJedis();
             result = jedis.incr(key);
         } catch (Exception e) {
-            //log.error("failed to incr key:{}",key,e);
+            log.error("failed to incr key:{}",key,e);
         } finally {
             RedisPool.jedisPoolClose(jedis);
         }
@@ -62,7 +60,7 @@ public class RedisPoolUtil {
             jedis = RedisPool.getJedis();
             result = jedis.decr(key);
         } catch (Exception e) {
-            //log.error("failed to decr key:{}",key,e);
+            log.error("failed to decr key:{}",key,e);
         } finally {
             RedisPool.jedisPoolClose(jedis);
         }

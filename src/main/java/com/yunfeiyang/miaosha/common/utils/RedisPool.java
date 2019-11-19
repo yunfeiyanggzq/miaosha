@@ -42,7 +42,7 @@ public class RedisPool {
         config.setBlockWhenExhausted(true);
         config.setMaxWaitMillis(maxWait);
         pool = new JedisPool(config, redisIP, redisPort, 1000 * 2,password);
-        //log.info("success to get redis connect pool");
+        log.info("success to get redis connect pool");
     }
 
     // getJedis return a redis connection
